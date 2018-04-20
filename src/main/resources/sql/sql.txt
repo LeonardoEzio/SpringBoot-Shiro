@@ -1,0 +1,36 @@
+create table user(
+  id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  username VARCHAR(20) NOT NULL ,
+  password VARCHAR(20) not null
+);
+
+
+create table role(
+  id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  rolename VARCHAR(20) NOT NULL,
+  roledesc VARCHAR(20)
+);
+
+
+create table permission(
+  id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  modelname VARCHAR(20) NOT NULL ,
+  permission VARCHAR(20) NOT NULL
+);
+
+create table user_role(
+  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  uid int NOT NULL ,
+  rid int NOT NULL
+);
+
+create table role_permission(
+  id INT NOT NULL  PRIMARY KEY  AUTO_INCREMENT,
+  rid int NOT NULL ,
+  pid int NOT NULL
+)
+
+select u.id u_id,username,password,r.id r_id ,rolename ,roledesc , p.id p_id ,modelname,permission from user u LEFT JOIN user_role ur on u.id = ur.uid
+      LEFT JOIN role r ON ur.rid = r.id
+      LEFT JOIN role_permission rp ON r.id = rp.rid
+      LEFT JOIN permission p on rp.pid = p.id where u.username = "leonardo" and ur.uid = r.id

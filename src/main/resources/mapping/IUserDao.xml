@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="leonardo.ezio.permission.demo.shiro.dao.IUserDao">
+    <select id="findUserByName" parameterType="String" resultMap="user" >
+        select u.id u_id,username,password,r.id r_id ,rolename ,roledesc , p.id p_id ,modelname,permission from user u
+        INNER JOIN user_role ur on u.id = ur.uid
+        INNER JOIN role r ON ur.rid = r.id
+        INNER JOIN role_permission rp ON r.id = rp.rid
+        INNER JOIN permission p on rp.pid = p.id
+        where u.username = #{name} and ur.uid = r.id
+    </select>
+
+    <resultMap id="user" type="leonardo.ezio.permission.demo.shiro.bean.User">
+        <id property="id" column="u_id"></id>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <collection property="roleList" ofType="leonardo.ezio.permission.demo.shiro.bean.Role">
+            <id property="id" column="r_id"/>
+            <result property="rolename" column="rolename"/>
+            <result property="roledesc" column="roledesc"/>
+            <collection property="permissions" ofType="leonardo.ezio.permission.demo.shiro.bean.Permission">
+                <id property="id" column="p_id"/>
+                <result property="modelname" column="modelname"/>
+                <result property="permission" column="permission"/>
+            </collection>
+        </collection>
+    </resultMap>
+</mapper>
